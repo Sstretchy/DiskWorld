@@ -1,0 +1,23 @@
+.chalk-font-35 {
+  font-family: 'Marmelad', sans-serif;
+    font-size: 35px;
+    z-index: 3;
+    color: #1976d2;
+    text-align: center;
+  }
+  
+.chalk-font-45 {
+  font-family: 'Marmelad', sans-serif;
+    font-size: 45px;
+    margin: 20px 0px;
+    z-index: 3;
+    color: #1976d2;
+    text-align: center;
+  }
+
+.about-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

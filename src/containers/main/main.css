@@ -1,0 +1,17 @@
+ .main-cont {
+display: flex;
+justify-content: center;
+ }
+ 
+ .logo {
+    
+    height: 45vh;
+  }
+
+  .text-main-cont {
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
