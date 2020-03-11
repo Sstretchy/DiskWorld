@@ -35,14 +35,13 @@ class Categories extends React.Component {
     }
 
     links = [
-        { name: 'Печенье' },
-        { name: 'Сухарики и гренки' },
-        { name: 'Шоколад' },
-        { name: 'Орехи' },
-        { name: 'Чипсы' },
-        { name: 'Мармелад' },
-        { name: 'Драже' },
-        { name: 'Конфеты' },
+        { name: 'Хиты' },
+        { name: 'Стратегические' },
+        { name: 'С детьми' },
+        { name: 'В дорогу' },
+        { name: 'В подарок' },
+        { name: 'В офис' },
+        { name: 'Для двоих' },
     ];
     render() {
         return (
