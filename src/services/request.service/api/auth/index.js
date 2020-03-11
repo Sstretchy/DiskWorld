@@ -1,6 +1,6 @@
 import { sendRequest } from '../../request.builder';
 
-const prefix = 'http://honeybunnycandyshop.herokuapp.com/api/auth/';
+const prefix = 'https://discworld.herokuapp.com/api/auth/';
 
 export const auth = {
   signIn: (data) => {

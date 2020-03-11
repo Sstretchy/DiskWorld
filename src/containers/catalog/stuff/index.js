@@ -42,7 +42,7 @@ class Stuff extends React.Component {
                                     height="140"
                                 >
                                     <img
-                                        src={'https://sun9-4.userapi.com/c824201/v824201969/173426/YW0DIgHPsvw.jpg?ava=1'}
+                                        src={item.link}
                                         className='img-width'
                                         alt="recipe thumbnail"
                                     />
