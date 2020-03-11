@@ -5,7 +5,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import cake from '../../../cake.jpg';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import AddIcon from '@material-ui/icons/Add';
 import './stuff.css';
@@ -30,6 +29,7 @@ class Stuff extends React.Component {
                 container
                 spacing={2}
             >
+               
                 {stuff.map((item, index) => (
                     <Grid
                         key={index}
@@ -42,7 +42,7 @@ class Stuff extends React.Component {
                                     height="140"
                                 >
                                     <img
-                                        src={cake}
+                                        src={'https://sun9-4.userapi.com/c824201/v824201969/173426/YW0DIgHPsvw.jpg?ava=1'}
                                         className='img-width'
                                         alt="recipe thumbnail"
                                     />
@@ -63,13 +63,14 @@ class Stuff extends React.Component {
                                 </CardContent>
                             </CardActionArea>
                             <CardActions className='actions-align'>
+                                {console.log(item)}
                                 <Typography
                                     noWrap
                                     variant='body2'>
                                     <b>{`${item.price}₽ `}</b>{item.measure}
                                 </Typography>
                                 <Button
-                                    onClick={() => addToBasket(index)}
+                                    onClick={() => addToBasket(item.id)}
                                     color='secondary'
                                 >
                                     <AddIcon />

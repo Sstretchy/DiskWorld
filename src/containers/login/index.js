@@ -15,6 +15,7 @@ import logotip from '../../logotip.png';
 import './login.css';
 import { requestService } from '../../services/request.service';
 import { addJWT } from '../../services/request.service/request.builder';
+import ToastService from '../../services/toast.notify';
 
 @inject('store')
 @observer
@@ -32,15 +33,18 @@ class Login extends React.Component {
     onLogin = async () => {
         const { login, password } = this.state;
         try {
-            const accessToken = await requestService.auth.signIn({
+            const { accessToken, user: { id, firstName, lastName } } = await requestService.auth.signIn({
                 login,
                 password,
             });
-            console.log(accessToken)
+            localStorage.setItem('id', id);
+            localStorage.setItem('firstName', firstName);
+            localStorage.setItem('lastName', lastName);
+
             addJWT(accessToken);
             this.props.history.push('/');
         } catch (signInError) {
-            throw new Error(signInError);
+            ToastService.notify('Такого пользователя не существует');
         }
     };
 

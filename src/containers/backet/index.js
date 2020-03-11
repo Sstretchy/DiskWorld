@@ -15,7 +15,6 @@ import {
   Typography,
   IconButton,
   Paper,
-  CircularProgress
 } from '@material-ui/core';
 import './backet.css';
 import { inject, observer } from 'mobx-react';
@@ -24,7 +23,7 @@ import { inject, observer } from 'mobx-react';
 @observer
 class Backet extends React.Component {
   async componentDidMount() {
-    this.props.store.basket.fetchBasket(3)
+    this.props.store.basket.fetchBasket(localStorage.getItem('id'))
     const { setSumma } = this.props.store.basket;
     setSumma()
   }
@@ -40,8 +39,6 @@ class Backet extends React.Component {
       removeFromBasket,
       reduceProduct,
       summa = 0,
-      status,
-      setOrder
     } = this.props.store.basket;
 
     return (
@@ -90,16 +87,15 @@ class Backet extends React.Component {
                             <Box>
                               <Typography
                                 variant='h6'>
-                                {item.name}
+                                {item.good.name}
                               </Typography>
                               <Typography>
-                                {`${item.type}, ${item.price}₽ ${item.forHowMuch}`}
+                                {`${item.good.category}, ${item.good.price}₽ ${item.good.measure}`}
                               </Typography>
                             </Box>
                             <Box className='cart-item-container'>
                               <IconButton
-                                disabled={status}
-                                onClick={() => removeFromBasket(index)}
+                                onClick={() => removeFromBasket(item.id)}
                                 className='iconButton-padding-off'
                               >
                                 <DeleteForeverIcon
@@ -109,8 +105,7 @@ class Backet extends React.Component {
                               </IconButton>
                               <Box className='cart-container'>
                                 <IconButton
-                                  disabled={status}
-                                  onClick={() => reduceProduct(index)}
+                                  onClick={() => reduceProduct(item.id, item.amount - 1)}
                                   className='iconButton-padding-off'
                                 >
                                   <RemoveCircleIcon
@@ -120,12 +115,11 @@ class Backet extends React.Component {
                                 </IconButton>
                                 <InputBase
                                   readOnly
-                                  value={item.count}
+                                  value={item.amount}
                                   className='text-align-center'
                                 />
                                 <IconButton
-                                  disabled={status}
-                                  onClick={() => addProduct(index)}
+                                  onClick={() => addProduct(item.id, item.amount + 1)}
                                   className='iconButton-padding-off'
                                 >
                                   <AddCircleIcon
@@ -158,47 +152,21 @@ class Backet extends React.Component {
                       {`Сумма покупки: ${summa} рублей`}
                     </Typography>
                     {
-                      status ?
-                        <>
-                          <Typography
-                            className='typography-margin-20'
-                            variant="h5">
-                            Доставляется
-                                                    </Typography>
-                          <CircularProgress
-                            size={80}
-                            className='progress-margin'
-                            color='secondary'
-                          />
-                          <Button
-                            className='button-margin-20'
-                            onClick={setOrder}
-                            color='secondary'
-                            variant='contained'
-                          >
-                            Отменить заказ
-                                                </Button>
-                        </>
+                      Constants.minSumOfOrder > summa ?
+                        <Typography
+                          className='typography-margin-20 typography-width-200'
+                          variant="h5"
+                        >
+                          {`До минимальной суммы заказа осталось: ${Constants.minSumOfOrder - summa} рублей`}
+                        </Typography>
                         :
-                        <>
-                          {
-                            Constants.minSumOfOrder > summa ?
-                              <Typography
-                                className='typography-margin-20 typography-width-200'
-                                variant="h5"
-                              >
-                                {`До минимальной суммы заказа осталось: ${Constants.minSumOfOrder - summa} рублей`}
-                              </Typography>
-                              :
-                              <Button
-                                className='button-margin-20'
-                                onClick={() => this.toPath('/order')}
-                                color='secondary'
-                                variant='contained'>
-                                {status ? 'Отменить заказ' : 'Оформить заказ'}
+                        <Button
+                          className='button-margin-20'
+                          onClick={() => this.toPath('/order')}
+                          color='secondary'
+                          variant='contained'>
+                          Оформить заказ
                               </Button>
-                          }
-                        </>
                     }
                   </Box>
                 </Paper>

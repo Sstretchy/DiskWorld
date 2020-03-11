@@ -6,7 +6,7 @@ import Backet from '../containers/backet';
 import { withRouter } from 'react-router';
 import Order from '../containers/order';
 import AboutShop from '../containers/about.shop'
-import Contacts from '../containers/contacts';
+import Delivery from '../containers/delivery';
 import Login from '../containers/login';
 import SignUp from '../containers/signup';
 import {
@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import notFound from '../404.png';
 import { inject, observer } from 'mobx-react';
+import Success from '../containers/success';
 
 @inject('store')
 @observer
@@ -53,14 +54,19 @@ class Content extends React.Component {
                     component={SignUp}
                 />
                 <Route
-                    path='/contacts'
+                    path='/delivery'
                     exact
-                    component={Contacts}
+                    component={Delivery}
                 />
                 <Route
                     path='/aboutshop'
                     exact
                     component={AboutShop}
+                />
+                <Route
+                    path='/success'
+                    exact
+                    component={Success}
                 />
                 <Route
                     component={() => {

@@ -1,9 +1,8 @@
 .chalk-font-35 {
   font-family: 'Marmelad', sans-serif;
-    font-size: 35px;
+    font-size: 25px;
     z-index: 3;
     color: #1976d2;
-    text-align: center;
   }
   
 .chalk-font-45 {
@@ -12,12 +11,11 @@
     margin: 20px 0px;
     z-index: 3;
     color: #1976d2;
-    text-align: center;
   }
 
 .about-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
 }

@@ -7,17 +7,14 @@ import {
   Divider,
 } from '@material-ui/core';
 import StoreMallDirectoryIcon from '@material-ui/icons/StoreMallDirectory';
-import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
-import StoreIcon from '@material-ui/icons/Store';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import PaymentIcon from '@material-ui/icons/Payment';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import { withRouter } from 'react-router';
 
 class Navigation extends React.Component {
   links = [
     { link: '/catalog', name: 'Каталог', icon: StoreMallDirectoryIcon },
-    { link: '/contacts', name: 'Контакты', icon: ContactPhoneIcon },
+    { link: '/delivery', name: 'Доставка', icon: LocalShippingIcon },
     { link: '/aboutshop', name: 'О магазине', icon: ContactSupportIcon },
   ];
 

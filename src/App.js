@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react'
+import { addJWT } from './services/request.service/request.builder';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -16,6 +17,7 @@ import footerdisk from './footerdisk.png'
 import Navigation from './layouts/navigation';
 import Content from './layouts/content';
 import Header from './layouts/header';
+import ToastTrigger from './containers/toast.trigger';
 
 const drawerWidth = 200;
 
@@ -89,6 +91,10 @@ export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  useEffect(() => {
+    addJWT(localStorage.getItem('jwt'));
+  }, [])
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -142,6 +148,7 @@ export default function App() {
       >
         <div className={classes.drawerHeader} />
         <Box className='content'>
+          <ToastTrigger />
           <Content />
         </Box>
         <footer>
