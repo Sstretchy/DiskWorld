@@ -40,7 +40,7 @@ class BasketStore {
             await requestService.basket.deleteFromBasket(itemId);
             const basket = await requestService.basket.getBasket(this.user_id);
             this.setToStore('basket', basket)
-            this.count--;
+            this.count(false)
         } catch (signInError) {
             console.log('Ошибка удаления');
         }
@@ -65,12 +65,21 @@ class BasketStore {
                 await requestService.basket.postBasket({ amount: 1, user_id: this.user_id, good_id });
                 const basket = await requestService.basket.getBasket(this.user_id);
                 this.setToStore('basket', basket)
-                this.count++;
+                this.count(true)
             } catch (signInError) {
                 console.log('Ошибка при получении корзины');
             }
         } else {
             ToastService.notify('Войдите, чтобы начать покупки');
+        }
+    }
+
+    @action
+    count = (what) => {
+        if (what) {
+            this.count++;
+        } else {
+            this.count--;
         }
     }
 
