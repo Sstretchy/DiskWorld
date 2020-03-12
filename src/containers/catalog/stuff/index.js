@@ -67,7 +67,7 @@ class Stuff extends React.Component {
                                 <Typography
                                     noWrap
                                     variant='body2'>
-                                    <b>{`${item.price}₽ `}</b>{item.measure}
+                                    <b>{`${item.price}₽ `}</b>
                                 </Typography>
                                 <Button
                                     onClick={() => addToBasket(item.id)}

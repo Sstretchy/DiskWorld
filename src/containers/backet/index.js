@@ -90,7 +90,7 @@ class Backet extends React.Component {
                                 {item.good.name}
                               </Typography>
                               <Typography>
-                                {`${item.good.category}, ${item.good.price}₽ ${item.good.measure}`}
+                                {`${item.good.category}, ${item.good.price}₽`}
                               </Typography>
                             </Box>
                             <Box className='cart-item-container'>

@@ -121,7 +121,7 @@ class BacketAlert extends React.Component {
                     >
                       <Box>
                         <Typography variant='h6'>{item.good.name}</Typography>
-                        <Typography>{`${item.good.category}, ${item.good.price}₽ ${item.good.measure}`}</Typography>
+                        <Typography>{`${item.good.category}, ${item.good.price}₽`}</Typography>
                       </Box>
                       <Box className='cart-item-container'>
                         <IconButton
