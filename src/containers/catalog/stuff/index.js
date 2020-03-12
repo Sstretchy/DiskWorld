@@ -50,7 +50,7 @@ class Stuff extends React.Component {
                                 <CardContent>
                                     <Box className='wrap-box'>
                                         <b className='text-wrap'>
-                                            {`${item.name}, ${item.weight}`}
+                                            {item.name}
                                         </b>
                                     </Box>
                                     <Typography
