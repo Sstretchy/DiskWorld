@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import AddIcon from '@material-ui/icons/Add';
+import { withRouter } from 'react-router';
 import './stuff.css';
 import {
     Grid,
@@ -18,10 +19,15 @@ import { inject, observer } from 'mobx-react';
 @inject('store')
 @observer
 class Stuff extends React.Component {
+    toGood = async (id) => {
+        await this.props.store.basket.fetchGood(id)
+        this.props.history.push(`/good/${id}`);
+    }
+
     render() {
         const {
             addToBasket,
-            stuff = []
+            stuff = [],
         } = this.props.store.basket;
 
         return (
@@ -29,7 +35,7 @@ class Stuff extends React.Component {
                 container
                 spacing={2}
             >
-               
+
                 {stuff.map((item, index) => (
                     <Grid
                         key={index}
@@ -37,7 +43,7 @@ class Stuff extends React.Component {
                         className='stuff-margin width-stuff'
                     >
                         <Card >
-                            <CardActionArea>
+                            <CardActionArea onClick={() => this.toGood(item.id)}>
                                 <CardMedia
                                     height="140"
                                 >
@@ -86,4 +92,4 @@ class Stuff extends React.Component {
     }
 }
 
-export default Stuff;
+export default withRouter(Stuff);

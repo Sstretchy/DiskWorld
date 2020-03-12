@@ -10,6 +10,12 @@ class BasketStore {
     status = false;
 
     @observable
+    categories = [];
+
+    @observable
+    good = [];
+
+    @observable
     summa = 0;
 
     @observable
@@ -106,17 +112,35 @@ class BasketStore {
         }
     }
 
+    fetchCategories = async () => {
+        try {
+            const categories = await requestService.category.getCategories();
+            await this.fetchStuff(categories[0].name)
+            this.setToStore('categories', categories)
+        } catch (signInError) {
+            console.log('Ошибка при получении категорий');
+        }
+    }
+
     @action
     setToStore = (name, data) => {
         this[name] = data;
         this.count = this.basket.length;
         this.setSumma()
-        console.log(this.basket)
     }
 
     @action
     clearCount = () => {
         this.count = 0;
+    }
+
+    fetchGood = async (goodId) => {
+        try {
+            const good = await requestService.good.getGood(goodId);
+            this.setToStore('good', good)
+        } catch (signInError) {
+            console.log('Ошибка');
+        }
     }
 }
 

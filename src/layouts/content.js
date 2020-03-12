@@ -9,6 +9,7 @@ import AboutShop from '../containers/about.shop'
 import Delivery from '../containers/delivery';
 import Login from '../containers/login';
 import SignUp from '../containers/signup';
+import View from '../containers/view';
 import {
     Grid,
     Box
@@ -67,6 +68,11 @@ class Content extends React.Component {
                     path='/success'
                     exact
                     component={Success}
+                />
+                <Route
+                    exact
+                    path='/good/:id'
+                    component={View}
                 />
                 <Route
                     component={() => {
