@@ -19,13 +19,13 @@ class Categories extends React.Component {
         this.state = {
             password: '',
             isRequesting: false,
-            chousen: 'Печенье'
+            chousen: 'Хиты'
         };
     }
 
     async componentDidMount() {
         const { fetchStuff } = this.props.store.basket;
-        await fetchStuff('Печенье')
+        await fetchStuff('Хиты')
     }
 
     changeCategory = async (category) => {
