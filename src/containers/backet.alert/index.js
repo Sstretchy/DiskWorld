@@ -55,18 +55,13 @@ class BacketAlert extends React.Component {
       removeFromBasket,
       reduceProduct,
       summa = 0,
-      count
     } = this.props.store.basket;
     return (
       <>
         <IconButton onClick={this.toggleDrawer('right', true)} >
-          {count ?
-            <>{count}</>
-            :
-            <ShoppingBasketIcon
-              color='primary'
-            />
-          }
+          <ShoppingBasketIcon
+            color='primary'
+          />
           <Typography color='primary'>&nbsp;Корзина</Typography>
         </IconButton>
         <Drawer
