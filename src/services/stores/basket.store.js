@@ -114,6 +114,10 @@ class BasketStore {
         console.log(this.basket)
     }
 
+    @action
+    clearCount = () => {
+        this.count = 0;
+    }
 }
 
 export default BasketStore;
