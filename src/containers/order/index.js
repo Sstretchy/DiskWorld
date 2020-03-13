@@ -5,6 +5,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { Validator } from '../../services/validator';
+import Constants from '../../consts';
 import './order.css';
 import {
     Grid,
@@ -123,7 +124,9 @@ class Order extends React.Component {
             email,
         } = this.state;
 
-        const disabled = address && firstName && lastName && phone;
+        const disabled = address && firstName && lastName && phone
+            && !Validator.isEmail(email).message && !Validator.isPhone(phone).message
+            && Constants.minSumOfOrder <= summa;
 
         if (status) {
             return <Redirect to='/backet' />;
@@ -218,7 +221,8 @@ class Order extends React.Component {
                         </Typography>
                     <TextField
                         required
-                        label='Например, г.Ярославль, ул.Панина, дом 10'
+                        placeholder='Например, г.Ярославль, ул.Панина, дом 10'
+                        label='Адрес'
                         value={address}
                         name='address'
                         onChange={this.ChangeInfo}

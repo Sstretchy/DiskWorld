@@ -17,14 +17,14 @@ class AboutShop extends React.Component {
                         className='footer-img'
                         src={hand}
                         alt="Logo"
-                        style={{ height: '100%', position: 'fixed', top: '80px', alignSelf: 'center'}}
+                        style={{ height: '100%', position: 'relative', alignSelf: 'center'}}
                     />
                     <Box className='chalk-font-45'>О компании</Box>
                     <Box className='chalk-font-35'>Disk World — это место, где всегда можно найти отличный подарок.</Box>
                     <Box className='chalk-font-35'>Disk World регулярно проводит собственные игротеки (встречи, где можно бесплатно поиграть в любые игры или научиться правилам), участвует в крупных мероприятиях (Нашествие, Селигер, «Дикая мята», день города и другие).</Box>
                     <Box className='chalk-font-45'>Основные преимущества:</Box>
                     <Box className='chalk-font-35'>Только 100% удачные покупки: если игра не понравится, её можно вернуть;</Box>
-                    <Box className='chalk-font-35'>В магазинах открывают коробки и показывают всё то, что есть внутри;</Box>
+                    <Box className='chalk-font-35'>В магазине открывают коробки и показывают всё то, что есть внутри;</Box>
                     <Box className='chalk-font-35'>Всегда хорошие цены;</Box>
                     <Box className='chalk-font-35'>Оперативная доставка.</Box>
                 </Box>
