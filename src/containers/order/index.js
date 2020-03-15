@@ -86,7 +86,6 @@ class Order extends React.Component {
     };
 
     oddMoney = event => {
-        console.log(232)
         this.setState({ oddMoney: event.target.value })
     }
 

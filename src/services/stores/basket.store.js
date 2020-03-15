@@ -104,11 +104,13 @@ class BasketStore {
     }
 
     fetchBasket = async () => {
-        try {
-            const basket = await requestService.basket.getBasket(this.user_id);
-            this.setToStore('basket', basket)
-        } catch (signInError) {
-            console.log('Ошибка при получении корзины');
+        if (localStorage.getItem('jwt')) {
+            try {
+                const basket = await requestService.basket.getBasket(this.user_id);
+                this.setToStore('basket', basket)
+            } catch (signInError) {
+                console.log('Ошибка при получении корзины');
+            }
         }
     }
 

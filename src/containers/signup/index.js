@@ -15,6 +15,7 @@ import { Validator } from '../../services/validator';
 import { inject, observer } from 'mobx-react';
 import { requestService } from '../../services/request.service';
 import logotip from '../../logotip.png';
+import ToastService from '../../services/toast.notify';
 
 @inject('store')
 @observer
@@ -86,7 +87,7 @@ class SignUp extends React.Component {
       return;
     }
     try {
-      const data = await requestService.auth.signUp({
+      await requestService.auth.signUp({
         firstName,
         lastName,
         login: email,
@@ -94,9 +95,8 @@ class SignUp extends React.Component {
         password,
       });
       history.push('/login');
-      console.log(data)
     } catch (signInError) {
-      throw new Error(signInError);
+      ToastService.notify('Пользователь с такой почтой уже зарегистрирован');
     }
   };
 
