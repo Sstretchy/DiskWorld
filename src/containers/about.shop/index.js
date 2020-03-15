@@ -17,7 +17,7 @@ class AboutShop extends React.Component {
                         className='footer-img'
                         src={hand}
                         alt="Logo"
-                        style={{ height: '100%', position: 'relative', alignSelf: 'center'}}
+                        style={{ height: '90%', position: 'fixed', top: '80px', alignSelf: 'center'}}
                     />
                     <Box className='chalk-font-45'>О компании</Box>
                     <Box className='chalk-font-35'>Disk World — это место, где всегда можно найти отличный подарок.</Box>
