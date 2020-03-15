@@ -10,22 +10,22 @@ class BasketStore {
     status = false;
 
     @observable
+    summa = 0;
+
+    @observable
     categories = [];
 
     @observable
     good = [];
 
     @observable
-    summa = 0;
-
-    @observable
-    count = 0;
-
-    @observable
     stuff = [];
 
     @observable
-    basket = [];
+    basket = localStorage.getItem('id') ? [] : JSON.parse(localStorage.getItem('basket')) || [];
+
+    @observable
+    count = localStorage.getItem('id') ? 0 : JSON.parse(localStorage.getItem('count'));
 
     @observable
     user_id = parseInt(localStorage.getItem('id'), 10);
@@ -41,24 +41,38 @@ class BasketStore {
     }
 
     @action
-    removeFromBasket = async (itemId) => {
-        try {
-            await requestService.basket.deleteFromBasket(itemId);
-            const basket = await requestService.basket.getBasket(this.user_id);
-            this.setToStore('basket', basket)
-        } catch (signInError) {
-            console.log('Ошибка удаления');
+    removeFromBasket = async (itemId, index) => {
+        if (localStorage.getItem('jwt')) {
+            try {
+                await requestService.basket.deleteFromBasket(itemId);
+                const basket = await requestService.basket.getBasket(this.user_id);
+                this.setToStore('basket', basket)
+            } catch (signInError) {
+                console.log('Ошибка удаления');
+            }
+        } else {
+            this.basket.splice(index, 1);
+            this.count = this.basket.length;
+            this.setSumma()
+            localStorage.setItem('basket', JSON.stringify(this.basket));
+            localStorage.setItem('count', JSON.stringify(this.count));
         }
     }
 
     @action
-    addProduct = async (item_id, amount) => {
-        try {
-            await requestService.basket.putBasket(item_id, { amount });
-            const basket = await requestService.basket.getBasket(this.user_id);
-            this.setToStore('basket', basket)
-        } catch (signInError) {
-            console.log('Ошибка при получении корзины');
+    addProduct = async (item_id, amount, index) => {
+        if (localStorage.getItem('jwt')) {
+            try {
+                await requestService.basket.putBasket(item_id, { amount });
+                const basket = await requestService.basket.getBasket(this.user_id);
+                this.setToStore('basket', basket)
+            } catch (signInError) {
+                console.log('Ошибка при получении корзины');
+            }
+        } else {
+            this.basket[index].amount = amount;
+            this.setSumma()
+            localStorage.setItem('basket', JSON.stringify(this.basket));
         }
     }
 
@@ -74,22 +88,60 @@ class BasketStore {
                 ToastService.notify('Уже в Вашей корзине');
             }
         } else {
-            ToastService.notify('Войдите, чтобы начать делать покупки');
+            const good = await requestService.good.getGood(good_id);
+            this.addToLocalBasket(good)
         }
     }
 
     @action
-    reduceProduct = async (item_id, amount) => {
+    addToLocalBasket = (good) => {
+        if (!this.basket.find((element) => element.good.id === good.id)) {
+            this.basket.push(
+                {
+                    good: {
+                        id: good.id,
+                        name: good.name,
+                        weight: good.weight,
+                        description: good.description,
+                        measure: good.measure,
+                        price: good.price,
+                        link: good.link,
+                        category: good.category
+                    },
+                    amount: 1
+                }
+            );
+            this.count = this.basket.length;
+            this.setSumma()
+            localStorage.setItem('basket', JSON.stringify(this.basket));
+            localStorage.setItem('count', JSON.stringify(this.count));
+        } else {
+            ToastService.notify('Уже в Вашей корзине');
+        }
+    }
+
+    @action
+    reduceProduct = async (item_id, amount, index) => {
         if (amount) {
-            try {
-                await requestService.basket.putBasket(item_id, { amount });
-                const basket = await requestService.basket.getBasket(this.user_id);
-                this.setToStore('basket', basket)
-            } catch (signInError) {
-                console.log('Ошибка при получении корзины');
+            if (localStorage.getItem('jwt')) {
+                try {
+                    await requestService.basket.putBasket(item_id, { amount });
+                    const basket = await requestService.basket.getBasket(this.user_id);
+                    this.setToStore('basket', basket)
+                } catch (signInError) {
+                    console.log('Ошибка при получении корзины');
+                }
+            } else {
+                this.basket[index].amount = amount;
+                this.setSumma()
+                localStorage.setItem('basket', JSON.stringify(this.basket));
             }
         } else {
-            await this.removeFromBasket(item_id)
+            if (localStorage.getItem('jwt')) {
+                await this.removeFromBasket(item_id)
+            } else {
+                this.removeFromBasket(item_id, index)
+            }
         }
     }
 
@@ -104,13 +156,11 @@ class BasketStore {
     }
 
     fetchBasket = async () => {
-        if (localStorage.getItem('jwt')) {
-            try {
-                const basket = await requestService.basket.getBasket(this.user_id);
-                this.setToStore('basket', basket)
-            } catch (signInError) {
-                console.log('Ошибка при получении корзины');
-            }
+        try {
+            const basket = await requestService.basket.getBasket(this.user_id);
+            this.setToStore('basket', basket)
+        } catch (signInError) {
+            console.log('Ошибка при получении корзины');
         }
     }
 
@@ -124,18 +174,6 @@ class BasketStore {
         }
     }
 
-    @action
-    setToStore = (name, data) => {
-        this[name] = data;
-        this.count = this.basket.length;
-        this.setSumma()
-    }
-
-    @action
-    clearCount = () => {
-        this.count = 0;
-    }
-
     fetchGood = async (goodId) => {
         try {
             const good = await requestService.good.getGood(goodId);
@@ -143,6 +181,18 @@ class BasketStore {
         } catch (signInError) {
             console.log('Ошибка');
         }
+    }
+
+    @action
+    setToStore = (name, data) => {
+        this[name] = data;
+        this.count = this.basket.length
+        this.setSumma()
+    }
+
+    @action
+    clearCount = () => {
+        this.count = 0;
     }
 }
 

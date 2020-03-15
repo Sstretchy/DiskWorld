@@ -6,6 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { Validator } from '../../services/validator';
 import Constants from '../../consts';
+import { addJWT } from '../../services/request.service/request.builder';
 import './order.css';
 import {
     Grid,
@@ -51,24 +52,39 @@ class Order extends React.Component {
             phone,
             email,
         } = this.state;
+
+        const { summa } = this.props.store.basket;
+
         try {
-            const { summa } = this.props.store.basket;
-            await requestService.order.postOrder(
-                {
-                    wayOfPaiment,
-                    oddMoney,
-                    address,
-                    porch,
-                    floor,
-                    apartment,
-                    comment: comment + ' Сумма: ' + summa,
-                    firstName,
-                    lastName,
-                    phone,
-                    email,
+            const data = {
+                wayOfPaiment,
+                oddMoney,
+                address,
+                porch,
+                floor,
+                apartment,
+                comment: comment + ' Сумма: ' + summa,
+                firstName,
+                lastName,
+                phone,
+                email,
+            }
+
+            if (localStorage.getItem('jwt')) {
+                await requestService.order.postOrder(data);
+                await requestService.basket.clearBasket();
+            } else {
+                addJWT('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODQzMDAxMjgsIm5iZiI6MTU4NDMwMDEyOCwianRpIjoiZjUzOTFjZTQtZjg1YS00M2EyLTg1ZjktNzAyOWY5NmQ0MDMwIiwiZXhwIjoxNjE1ODM2MTI4LCJpZGVudGl0eSI6ImFub25SZWdAbWFpbC5ydSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.JYOo2BJwJEDfmE2VoFbXFfLdq_8t2ptZGx3-RWmiLXs')
+                try {
+                    await requestService.order.postOrder(data);
+                } catch{
+                    console.log('Ошибка при отправке заказа');
+                } finally {
+                    localStorage.setItem('basket', JSON.stringify([]));
+                    localStorage.setItem('count', JSON.stringify(0));
+                    localStorage.removeItem('jwt');
                 }
-            );
-            await requestService.basket.clearBasket();
+            }
             this.props.store.basket.setToStore('basket', [])
             this.props.history.push('success')
         } catch (signInError) {
@@ -345,10 +361,11 @@ class Order extends React.Component {
                         variant="h5">
                         Подтверждение заказа
                          </Typography>
+                    {Constants.minSumOfOrder > summa ? `До минимальной суммы заказа осталось: ${Constants.minSumOfOrder - summa} рублей` : <></>}
                     <Typography
                         className='typography-margin-20'
                         variant="h5">
-                        {`Итог: ${summa} рублей`}
+                        {`Итог: ${summa} ₽`}
                     </Typography>
                     <Button
                         disabled={!disabled}
