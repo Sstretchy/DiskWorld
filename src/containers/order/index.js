@@ -52,6 +52,7 @@ class Order extends React.Component {
             email,
         } = this.state;
         try {
+            const { summa } = this.props.store.basket;
             await requestService.order.postOrder(
                 {
                     wayOfPaiment,
@@ -60,7 +61,7 @@ class Order extends React.Component {
                     porch,
                     floor,
                     apartment,
-                    comment,
+                    comment: comment + ' Сумма: ' + summa,
                     firstName,
                     lastName,
                     phone,
